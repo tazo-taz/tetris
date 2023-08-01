@@ -97,7 +97,7 @@ export default class Tetris {
             this.drawItemsBorder();
             this.drawGameObjects();
             this.applyMotionToObject();
-            //   this.removeLine();
+            this.removeLine();
         }, 300);
     }
     keyboardEvents() {

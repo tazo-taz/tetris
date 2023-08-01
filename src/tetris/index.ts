@@ -148,7 +148,7 @@ export default class Tetris {
       this.drawGameObjects();
 
       this.applyMotionToObject();
-      //   this.removeLine();
+      this.removeLine();
     }, 300);
   }
 

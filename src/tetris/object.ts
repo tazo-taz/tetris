@@ -177,7 +177,7 @@ export const removeLineFromObjects = (objects: objectType[]) => {
     .flat()
     .map((item) => {
       if (ys.find((y) => y > item.y)) {
-        item.y++;
+        item.y += ys.length;
       }
     });
 };
