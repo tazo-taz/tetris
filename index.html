@@ -18,10 +18,21 @@
         align-items: center;
         justify-content: center;
     }
+    .infoBar {
+        color: white;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
     </style>
 
 </head>
 <body>
+    <div class="infoBar">
+        <h2>Scores <span id="scores"></span></h2>
+        <h2>Levels <span id="levels"></span></h2>
+    </div>
+    <h2></h2>
     <canvas></canvas>
     <script type="module" src="./build/index.js"></script>
 </body>

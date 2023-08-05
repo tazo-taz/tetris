@@ -82,3 +82,10 @@ const removeByCoordProvider = (
 
 export const removeByYCoord = (items: coordType[], ys: number[]) =>
   removeByCoordProvider(items, ys, "y");
+
+export const moveItemsToLeftSideMap = (items: coordType[]) => {
+  const newItems = structuredClone(items)
+  const minX = itemsMinXCoord(items)
+  newItems.forEach((item) => item.x -= minX)
+  return newItems
+}

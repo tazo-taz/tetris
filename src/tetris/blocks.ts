@@ -3,12 +3,18 @@ import { itemsX } from "./constants.js";
 import { random, randomNumber } from "./default.js";
 import { coordType } from "./types.js";
 
+type generateBlockType = (color: string) => {
+  color: string,
+  items: coordType[],
+  rotationFunctions: ((items: coordType[]) => coordType[])[]
+}
+
 export type rotationFunctionsType = ((items: coordType[]) => {
   x: number;
   y: number;
 }[])[];
 
-const generateIBlock = (color: string) => {
+const generateIBlock: generateBlockType = (color) => {
   const x = randomNumber(itemsX);
   return {
     color,
@@ -19,7 +25,7 @@ const generateIBlock = (color: string) => {
       { x, y: 3 },
     ],
     rotationFunctions: [
-      (items: coordType[]) => [
+      (items) => [
         {
           x: items[0].x + 1,
           y: items[0].y - 2,
@@ -37,7 +43,7 @@ const generateIBlock = (color: string) => {
           y: items[3].y + 1,
         },
       ],
-      (items: coordType[]) => [
+      (items) => [
         {
           x: items[0].x + 2,
           y: items[0].y + 1,
@@ -55,7 +61,7 @@ const generateIBlock = (color: string) => {
           y: items[3].y - 2,
         },
       ],
-      (items: coordType[]) => [
+      (items) => [
         {
           x: items[0].x - 1,
           y: items[0].y + 2,
@@ -73,7 +79,7 @@ const generateIBlock = (color: string) => {
           y: items[3].y - 1,
         },
       ],
-      (items: coordType[]) => [
+      (items) => [
         {
           x: items[0].x - 2,
           y: items[0].y - 1,
@@ -95,7 +101,7 @@ const generateIBlock = (color: string) => {
   };
 };
 
-const generateJBlock = (color: string) => {
+const generateJBlock: generateBlockType = (color: string) => {
   const x = randomNumber(itemsX - 2);
   return {
     color,
@@ -105,11 +111,84 @@ const generateJBlock = (color: string) => {
       { x: x + 1, y: 1 },
       { x: x + 2, y: 1 },
     ],
-    rotationFunctions: [],
+    rotationFunctions: [
+      (item) => [
+        {
+          x: item[0].x,
+          y: item[0].y - 2
+        },
+        {
+          x: item[1].x - 1,
+          y: item[1].y - 1
+        },
+        {
+          x: item[2].x,
+          y: item[2].y
+        },
+        {
+          x: item[3].x + 1,
+          y: item[3].y + 1
+        },
+      ],
+      (item) => [
+        {
+          x: item[0].x + 2,
+          y: item[0].y
+        },
+        {
+          x: item[1].x + 1,
+          y: item[1].y - 1
+        },
+        {
+          x: item[2].x,
+          y: item[2].y
+        },
+        {
+          x: item[3].x - 1,
+          y: item[3].y + 1
+        },
+      ],
+      (item) => [
+        {
+          x: item[0].x,
+          y: item[0].y + 2
+        },
+        {
+          x: item[1].x + 1,
+          y: item[1].y + 1
+        },
+        {
+          x: item[2].x,
+          y: item[2].y
+        },
+        {
+          x: item[3].x - 1,
+          y: item[3].y - 1
+        },
+      ],
+      (item) => [
+        {
+          x: item[0].x - 2,
+          y: item[0].y
+        },
+        {
+          x: item[1].x - 1,
+          y: item[1].y + 1
+        },
+        {
+          x: item[2].x,
+          y: item[2].y
+        },
+        {
+          x: item[3].x + 1,
+          y: item[3].y - 1
+        },
+      ],
+    ],
   };
 };
 
-const generateLBlock = (color: string) => {
+const generateLBlock: generateBlockType = (color: string) => {
   const x = randomNumber(itemsX - 2);
   return {
     color,
@@ -119,11 +198,84 @@ const generateLBlock = (color: string) => {
       { x: x + 2, y: 1 },
       { x: x + 2, y: 0 },
     ],
-    rotationFunctions: [],
+    rotationFunctions: [
+      (item) => [
+        {
+          x: item[0].x - 1,
+          y: item[0].y - 1
+        },
+        {
+          x: item[1].x,
+          y: item[1].y
+        },
+        {
+          x: item[2].x + 1,
+          y: item[2].y + 1
+        },
+        {
+          x: item[3].x + 2,
+          y: item[3].y
+        },
+      ],
+      (item) => [
+        {
+          x: item[0].x + 1,
+          y: item[0].y - 1
+        },
+        {
+          x: item[1].x,
+          y: item[1].y
+        },
+        {
+          x: item[2].x - 1,
+          y: item[2].y + 1
+        },
+        {
+          x: item[3].x,
+          y: item[3].y + 2
+        },
+      ],
+      (item) => [
+        {
+          x: item[0].x + 1,
+          y: item[0].y + 1
+        },
+        {
+          x: item[1].x,
+          y: item[1].y
+        },
+        {
+          x: item[2].x - 1,
+          y: item[2].y - 1
+        },
+        {
+          x: item[3].x - 2,
+          y: item[3].y
+        },
+      ],
+      (item) => [
+        {
+          x: item[0].x - 1,
+          y: item[0].y + 1
+        },
+        {
+          x: item[1].x,
+          y: item[1].y
+        },
+        {
+          x: item[2].x + 1,
+          y: item[2].y - 1
+        },
+        {
+          x: item[3].x,
+          y: item[3].y - 2
+        },
+      ],
+    ],
   };
 };
 
-const generateSBlock = (color: string) => {
+const generateSBlock: generateBlockType = (color: string) => {
   const x = randomNumber(itemsX - 2);
   return {
     color,
@@ -133,11 +285,84 @@ const generateSBlock = (color: string) => {
       { x: x + 1, y: 0 },
       { x: x + 2, y: 0 },
     ],
-    rotationFunctions: [],
+    rotationFunctions: [
+      (items) => [
+        {
+          x: items[0].x - 1,
+          y: items[0].y - 1,
+        },
+        {
+          x: items[1].x,
+          y: items[1].y,
+        },
+        {
+          x: items[2].x + 1,
+          y: items[2].y - 1,
+        },
+        {
+          x: items[3].x + 2,
+          y: items[3].y,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x + 1,
+          y: items[0].y - 1,
+        },
+        {
+          x: items[1].x,
+          y: items[1].y,
+        },
+        {
+          x: items[2].x + 1,
+          y: items[2].y + 1,
+        },
+        {
+          x: items[3].x,
+          y: items[3].y + 2,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x + 1,
+          y: items[0].y + 1,
+        },
+        {
+          x: items[1].x,
+          y: items[1].y,
+        },
+        {
+          x: items[2].x - 1,
+          y: items[2].y + 1,
+        },
+        {
+          x: items[3].x - 2,
+          y: items[3].y,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x - 1,
+          y: items[0].y + 1,
+        },
+        {
+          x: items[1].x,
+          y: items[1].y,
+        },
+        {
+          x: items[2].x - 1,
+          y: items[2].y - 1,
+        },
+        {
+          x: items[3].x,
+          y: items[3].y - 2,
+        },
+      ],
+    ]
   };
 };
 
-const generateTBlock = (color: string) => {
+const generateTBlock: generateBlockType = (color: string) => {
   const x = randomNumber(itemsX - 2);
   return {
     color,
@@ -147,11 +372,84 @@ const generateTBlock = (color: string) => {
       { x: x + 1, y: 0 },
       { x: x + 2, y: 1 },
     ],
-    rotationFunctions: [],
+    rotationFunctions: [
+      (items) => [
+        {
+          x: items[0].x - 1,
+          y: items[0].y - 1,
+        },
+        {
+          x: items[1].x,
+          y: items[1].y,
+        },
+        {
+          x: items[2].x + 1,
+          y: items[2].y - 1,
+        },
+        {
+          x: items[3].x + 1,
+          y: items[3].y + 1,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x + 1,
+          y: items[0].y - 1,
+        },
+        {
+          x: items[1].x,
+          y: items[1].y,
+        },
+        {
+          x: items[2].x + 1,
+          y: items[2].y + 1,
+        },
+        {
+          x: items[3].x - 1,
+          y: items[3].y + 1,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x + 1,
+          y: items[0].y + 1,
+        },
+        {
+          x: items[1].x,
+          y: items[1].y,
+        },
+        {
+          x: items[2].x - 1,
+          y: items[2].y + 1,
+        },
+        {
+          x: items[3].x - 1,
+          y: items[3].y - 1,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x - 1,
+          y: items[0].y + 1,
+        },
+        {
+          x: items[1].x,
+          y: items[1].y,
+        },
+        {
+          x: items[2].x - 1,
+          y: items[2].y - 1,
+        },
+        {
+          x: items[3].x + 1,
+          y: items[3].y - 1,
+        },
+      ],
+    ],
   };
 };
 
-const generateZBlock = (color: string) => {
+const generateZBlock: generateBlockType = (color: string) => {
   const x = randomNumber(itemsX - 2);
   return {
     color,
@@ -161,7 +459,80 @@ const generateZBlock = (color: string) => {
       { x: x + 1, y: 1 },
       { x: x + 2, y: 1 },
     ],
-    rotationFunctions: [],
+    rotationFunctions: [
+      (items) => [
+        {
+          x: items[0].x,
+          y: items[0].y - 2,
+        },
+        {
+          x: items[1].x + 1,
+          y: items[1].y - 1,
+        },
+        {
+          x: items[2].x,
+          y: items[2].y,
+        },
+        {
+          x: items[3].x + 1,
+          y: items[3].y + 1,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x + 2,
+          y: items[0].y,
+        },
+        {
+          x: items[1].x + 1,
+          y: items[1].y + 1,
+        },
+        {
+          x: items[2].x,
+          y: items[2].y,
+        },
+        {
+          x: items[3].x - 1,
+          y: items[3].y + 1,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x,
+          y: items[0].y + 2,
+        },
+        {
+          x: items[1].x - 1,
+          y: items[1].y + 1,
+        },
+        {
+          x: items[2].x,
+          y: items[2].y,
+        },
+        {
+          x: items[3].x - 1,
+          y: items[3].y - 1,
+        },
+      ],
+      (items) => [
+        {
+          x: items[0].x - 2,
+          y: items[0].y,
+        },
+        {
+          x: items[1].x - 1,
+          y: items[1].y - 1,
+        },
+        {
+          x: items[2].x,
+          y: items[2].y,
+        },
+        {
+          x: items[3].x + 1,
+          y: items[3].y - 1,
+        },
+      ],
+    ],
   };
 };
 
@@ -182,13 +553,13 @@ const generateOBlock = (color: string) => {
 export const generateNewBlock = () => {
   const blockFunctions = [
     generateIBlock,
-    // generateJBlock,
-    // generateLBlock,
-    // generateSBlock,
-    // generateTBlock,
-    // generateZBlock,
-    // generateOBlock
+    generateJBlock,
+    generateLBlock,
+    generateSBlock,
+    generateTBlock,
+    generateZBlock,
+    generateOBlock
   ];
   const generateBlock = random(blockFunctions);
-  return { ...generateBlock(randomColor()), rotateIndex: 0 };
+  return { ...generateBlock(randomColor()), rotateIndex: 0, frames: 0 };
 };

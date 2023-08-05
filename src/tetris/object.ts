@@ -1,13 +1,12 @@
-import { itemsX, itemsY } from "./constants.js";
+import { itemsY } from "./constants.js";
 import { currentObjectType, objectType } from "./index";
 import {
   applyGravityToItems,
   areTwoItemssCollided,
   isItemOutsideOfSides,
-  itemsMaxXCoord,
   itemsMaxYCoord,
   removableYcoords,
-  removeByYCoord,
+  removeByYCoord
 } from "./items.js";
 import { coordType } from "./types.js";
 
@@ -17,34 +16,26 @@ export const objectMaxYCoord = (object: onlyItemsInObject) => {
   return itemsMaxYCoord(object.items);
 };
 
-export const objectMaxXCoord = (object: onlyItemsInObject) => {
-  return itemsMaxXCoord(object.items);
-};
-
 export const hasObjectReachedBottom = (object: onlyItemsInObject) => {
-  return objectMaxYCoord(object) + 1 === itemsY;
-};
-
-export const hasObjectReachedSides = (object: onlyItemsInObject) => {
-  return objectMaxXCoord(object) + 1 === itemsX;
+  return objectMaxYCoord(object) + 1 >= itemsY;
 };
 
 export const applyGravityToObject = (object: onlyItemsInObject) => {
-  applyGravityToItems(object.items);
+  return { ...object, items: applyGravityToItems(object.items) }
 };
 
-const hasObjectCollidedToOtherObjects = ({
+const hasItemsCollidedToOtherObjects = ({
   objects,
-  object,
+  items,
 }: {
   objects: objectType[];
-  object: onlyItemsInObject;
+  items: coordType[];
 }) => {
   for (let toCheckObject of objects) {
     if (
       areTwoItemssCollided(
         toCheckObject.items,
-        applyGravityToItems(structuredClone(object.items))
+        items
       )
     ) {
       return true;
@@ -59,20 +50,40 @@ export const checkCollisionForObject = ({
   onCollision,
 }: {
   objects: objectType[];
-  object: objectType;
+  object: onlyItemsInObject;
   onCollision?: () => void;
 }) => {
   let hasCollided = false;
-
   if (
     hasObjectReachedBottom(object) ||
-    hasObjectCollidedToOtherObjects({ object, objects })
+    hasItemsCollidedToOtherObjects({ items: object.items, objects })
   ) {
     hasCollided = true;
     onCollision && onCollision();
   }
   return hasCollided;
 };
+
+export const checkCollisionForObjectWithGravity = ({
+  objects,
+  object,
+  onCollision,
+}: {
+  objects: objectType[];
+  object: objectType;
+  onCollision?: () => void;
+}) => {
+  const items = applyGravityToItems(structuredClone(object.items))
+  let hasCollided = false;
+  if (
+    hasObjectReachedBottom(object) ||
+    hasItemsCollidedToOtherObjects({ items, objects })
+  ) {
+    hasCollided = true;
+    onCollision && onCollision();
+  }
+  return hasCollided;
+}
 
 export const checkFullCollisionForObject = ({
   objects,
@@ -83,10 +94,11 @@ export const checkFullCollisionForObject = ({
 }) => {
   return (
     hasObjectReachedBottom(object) ||
-    hasObjectCollidedToOtherObjects({ object, objects }) ||
+    hasItemsCollidedToOtherObjects({ items: object.items, objects }) ||
     isItemOutsideOfSides(object.items)
   );
 };
+
 
 export const rotateObject = ({
   object,
@@ -95,6 +107,9 @@ export const rotateObject = ({
   object: currentObjectType;
   objects: objectType[];
 }) => {
+  if (object.rotationFunctions.length === 0) {
+    return
+  }
   const newRotateIndex =
     (object.rotateIndex + 1) % object.rotationFunctions.length;
   const newItems = object.rotationFunctions[newRotateIndex](object.items);
@@ -103,6 +118,8 @@ export const rotateObject = ({
     object: { items: newItems },
     objects,
   });
+
+
 
   if (!hasCollided) {
     object.items = newItems;
@@ -180,4 +197,6 @@ export const removeLineFromObjects = (objects: objectType[]) => {
         item.y += ys.length;
       }
     });
+
+  return ys.length
 };
