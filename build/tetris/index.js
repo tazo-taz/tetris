@@ -173,16 +173,17 @@ export default class Tetris {
         window.addEventListener("keydown", (e) => this.keyboardEventsFunction(e));
     }
     keyboardEventsFunction({ key }) {
-        if (key === " ") {
+        console.log(key);
+        if ([" ", "Enter"].includes(key)) {
             rotateObject({ object: this.currentObject, objects: this.objects });
         }
-        else if (key === "a") {
+        else if (["a", "A", "ArrowLeft"].includes(key)) {
             moveObjectLeft({ object: this.currentObject, objects: this.objects });
         }
-        else if (key === "d") {
+        else if (["d", "D", "ArrowRight"].includes(key)) {
             moveObjectRight({ object: this.currentObject, objects: this.objects });
         }
-        else if (key === "s") {
+        else if (["s", "S", "ArrowDown"].includes(key)) {
             moveObjectDown({ object: this.currentObject, objects: this.objects });
         }
     }
